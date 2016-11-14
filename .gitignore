@@ -1,0 +1,16 @@
+*.o
+*~
+.deps
+Makefile
+Makefile.in
+aclocal.m4
+autom4te.cache
+compile
+config.*
+configure
+depcomp
+install-sh
+missing
+stamp-h1
+swupd-overdue.1.html
+swupd-overdue-*.tar.*
