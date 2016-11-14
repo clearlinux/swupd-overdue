@@ -1,0 +1,54 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "SWUPD\-OVERDUE" "1" "November 2016" "" ""
+.
+.SH "NAME"
+\fBswupd\-overdue\fR \- Trigger OS updates if exceeding a time threshold
+.
+.SH "SYNOPSIS"
+\fBswupd\-overdue\fR [\fIthreshold\fR]
+.
+.SH "DESCRIPTION"
+This program checks that OS updates are applied at boot time if there is an indication that OS updates have not been applied for a specified (threshold) time (in seconds)\.
+.
+.P
+The update is started by signalling \fBsystemd\fR that the \fBswupd\-update\.service\fR should be started, using \fBsystemctl\fR\. This requires that this program is executed with appropriate (\fBroot\fR) permissions in order to succeed\.
+.
+.P
+The \fBthreshold\fR defaults to 14 days, and is checked against the version time stamp file in \fB/usr/share/clear/versionstamp\fR\. If the OS has not been updated longer than the \fBthreshold\fR value, the OS software update service unit will be started\.
+.
+.P
+The \fBthreshold\fR value is in seconds\. It can be passed optionally at the command line as argument 1\.
+.
+.P
+If the \fBswupd\-update\.service\fR unit is masked, the update will fail\. If the \fBswupd\-update\.timer\fR unit is masked, but the \fBswupd\-update\.service\fR is not masked, the update will be performed\.
+.
+.SH "SYNTAX"
+\fBswupd\-overdue\fR is not meant to be directly executed from the command line\. The system administrator should \fBsystemctl enable swupd\-overdue\.service\fR to ensure that the program is run at every boot\. Additionally, one should ensure that OS software updates are automatically applied by enabling \fBswupd\-update\.timer\fR as well\.
+.
+.SH "EXIT STATUS"
+On success, 0 is returned, a non\-zero failure code otherwise\.
+.
+.SH "COPYRIGHT"
+.
+.IP "\(bu" 4
+Copyright (C) 2016 Intel Corporation, License: CC\-BY\-SA\-3\.0
+.
+.IP "" 0
+.
+.SH "SEE ALSO"
+.
+.IP "\(bu" 4
+swupd(1)
+.
+.IP "" 0
+.
+.SH "NOTES"
+Creative Commons Attribution\-ShareAlike 3\.0 Unported
+.
+.IP "\(bu" 4
+http://creativecommons\.org/licenses/by\-sa/3\.0/
+.
+.IP "" 0
+
