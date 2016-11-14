@@ -16,6 +16,9 @@ EXTRA_DIST = \
 	COPYING \
 	swupd-overdue.service
 
+dist_man_MANS = \
+	swupd-overdue.1
+
 DISTCHECK_CONFIGURE_FLAGS = \
 	--with-systemdsystemunitdir=$$dc_install_base/$(systemdsystemunitdir) \
 	--with-systemdtmpfilesdir=$$dc_install_base/$(tmpfilesdir)
