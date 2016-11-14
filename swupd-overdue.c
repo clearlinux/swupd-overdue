@@ -65,10 +65,12 @@ int main(int argc, char *argv[])
 	t = time(NULL);
 
 	if ((t - tf) >= exp) {
-		fprintf(stderr, "Software update is overdue: %.1f days (threshold = %.1f days)\n",
+		fprintf(stderr, "Software update is overdue: %.1f days "
+			"(threshold = %.1f days)\n",
 			(t - tf) / 86400.0,
 			exp / 86400.0);
-		execl("/usr/bin/systemctl", "/usr/bin/systemctl", "start", "swupd-update.service", NULL);
+		execl("/usr/bin/systemctl", "/usr/bin/systemctl", "start",
+		      "swupd-update.service", NULL);
 	}
 
 	exit(0);
