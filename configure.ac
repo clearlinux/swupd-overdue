@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([swupd-ovedue], 1[], [dev@lists.clearlinux.org])
+AC_INIT([swupd-overdue], 1[], [dev@lists.clearlinux.org])
 AM_INIT_AUTOMAKE([foreign -Wall -W subdir-objects])
 AM_SILENT_RULES([yes])
 
