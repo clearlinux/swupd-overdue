@@ -3,7 +3,7 @@ swupd-overdue(1) -- Trigger OS updates if exceeding a time threshold
 
 ## SYNOPSIS
 
-`swupd-overdue` [<threshold>]
+`swupd-overdue [threshold]`
 
 ## DESCRIPTION
 
