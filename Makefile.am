@@ -26,6 +26,6 @@ DISTCHECK_CONFIGURE_FLAGS = \
 systemdsystemunit_DATA = \
 	swupd-overdue.service
 
-swupd-overdue.1:
+swupd-overdue.1: swupd-overdue.md
 	ronn swupd-overdue.md
 	rm -f swupd-overdue.1.html
