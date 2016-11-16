@@ -50,6 +50,8 @@ On success, 0 is returned, a non-zero failure code otherwise.
 
  * swupd(1)
 
+ * https://clearlinux.org/documentation/
+
 ## NOTES
 
 Creative Commons Attribution-ShareAlike 3.0 Unported
