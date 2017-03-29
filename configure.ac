@@ -13,10 +13,12 @@ AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
-AC_CHECK_HEADERS([stdlib.h string.h unistd.h])
+AC_CHECK_HEADERS([stdlib.h string.h unistd.h systemd/sd-bus.h])
 AC_CHECK_FUNCS([memset])
 
 PKG_CHECK_MODULES([SYSTEMD], [systemd])
+PKG_CHECK_MODULES(LIBSYSTEMD, [libsystemd] [],
+            [AC_MSG_ERROR([*** libsystemd library not found])])
 
 dir=""
 AC_ARG_WITH([systemdsystemunitdir], AS_HELP_STRING([--with-systemdsystemunitdir=DIR],
