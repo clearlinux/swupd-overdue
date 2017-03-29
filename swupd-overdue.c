@@ -22,6 +22,7 @@
  */
 
 
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -29,6 +30,7 @@
 #include <unistd.h>
 #include <time.h>
 #include <string.h>
+#include <errno.h>
 
 /* What file do we check against? */
 #define DATESTAMPFILE "/usr/share/clear/versionstamp"
@@ -44,21 +46,21 @@ int main(int argc, char *argv[])
 	char buf[32];
 
 	if (argc == 2) {
-		exp = atoi(argv[1]);
-		if (exp < 0)
-			exit(-1);
+		exp = strtol(argv[1], NULL, 10);
+		if ( (exp == LONG_MAX || exp == LONG_MIN) && errno != 0 )
+			exit(errno);
 	}
 
 	/* fetch timestamp from versionstamp file */
 	memset(buf, 0, sizeof(buf));
 	f = fopen(DATESTAMPFILE, "re");
 	if (!f)
-		exit(-1);
+		exit(errno);
 	if (!fgets(buf, sizeof(buf), f))
 		exit(-1);
-	tf = atol(buf);
-	if (tf < 0)
-		exit(-1);
+	tf = strtol(&buf[0], NULL, 10);
+	if ( (tf == LONG_MAX || tf == LONG_MIN) && errno != 0 )
+		exit(errno);
 	fclose(f);
 
 	/* wall clock - ignores timezones */
@@ -73,5 +75,5 @@ int main(int argc, char *argv[])
 		      "swupd-update.service", NULL);
 	}
 
-	exit(0);
+	exit(EXIT_SUCCESS);
 }
