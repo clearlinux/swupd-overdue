@@ -31,6 +31,7 @@
 #include <time.h>
 #include <string.h>
 #include <errno.h>
+#include <systemd/sd-bus.h>
 
 /* What file do we check against? */
 #define DATESTAMPFILE "/usr/share/clear/versionstamp"
@@ -44,6 +45,9 @@ int main(int argc, char *argv[])
 	time_t tf;
 	FILE *f;
 	char buf[32];
+	sd_bus_error error = SD_BUS_ERROR_NULL;
+	sd_bus *bus = NULL;
+	int ret = 0;
 
 	if (argc == 2) {
 		exp = strtol(argv[1], NULL, 10);
@@ -71,8 +75,27 @@ int main(int argc, char *argv[])
 			"(threshold = %.1f days)\n",
 			(t - tf) / 86400.0,
 			exp / 86400.0);
-		execl("/usr/bin/systemctl", "/usr/bin/systemctl", "start",
-		      "swupd-update.service", NULL);
+
+		do {
+			if ((ret = sd_bus_open_system(&bus)) < 0)
+				break;
+			if ((ret = sd_bus_call_method(bus,
+						"org.freedesktop.systemd1",
+						"/org/freedesktop/systemd1",
+						"org.freedesktop.systemd1.Manager",
+						"StartUnit",
+						&error,
+						NULL,
+						"ss",
+						"swupd-update.service",
+						"replace")) < 0)
+				break;
+
+		} while (0);
+		sd_bus_error_free(&error);
+		sd_bus_unref(bus);
+
+		exit(ret < 0 ? ret : EXIT_SUCCESS);
 	}
 
 	exit(EXIT_SUCCESS);
