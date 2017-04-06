@@ -15,6 +15,7 @@ swupd_overdue_SOURCES = \
 
 EXTRA_DIST = \
 	COPYING \
+	swupd-overdue.md \
 	swupd-overdue.service
 
 dist_man_MANS = \
