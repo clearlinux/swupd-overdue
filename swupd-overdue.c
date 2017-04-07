@@ -70,33 +70,33 @@ int main(int argc, char *argv[])
 	/* wall clock - ignores timezones */
 	t = time(NULL);
 
-	if ((t - tf) >= exp) {
-		fprintf(stderr, "Software update is overdue: %.1f days "
-			"(threshold = %.1f days)\n",
-			(t - tf) / 86400.0,
-			exp / 86400.0);
+	/* nothing to do, system is not overdue for an update */
+	if ((t - tf) < exp)
+		exit(EXIT_SUCCESS);
 
-		do {
-			if ((ret = sd_bus_open_system(&bus)) < 0)
-				break;
-			if ((ret = sd_bus_call_method(bus,
-						"org.freedesktop.systemd1",
-						"/org/freedesktop/systemd1",
-						"org.freedesktop.systemd1.Manager",
-						"StartUnit",
-						&error,
-						NULL,
-						"ss",
-						"swupd-update.service",
-						"replace")) < 0)
-				break;
+	fprintf(stderr, "Software update is overdue: %.1f days "
+		"(threshold = %.1f days)\n",
+		(t - tf) / 86400.0,
+		exp / 86400.0);
 
-		} while (0);
-		sd_bus_error_free(&error);
-		sd_bus_unref(bus);
+	do {
+		if ((ret = sd_bus_open_system(&bus)) < 0)
+			break;
+		if ((ret = sd_bus_call_method(bus,
+					"org.freedesktop.systemd1",
+					"/org/freedesktop/systemd1",
+					"org.freedesktop.systemd1.Manager",
+					"StartUnit",
+					&error,
+					NULL,
+					"ss",
+					"swupd-update.service",
+					"replace")) < 0)
+			break;
 
-		exit(ret < 0 ? ret : EXIT_SUCCESS);
-	}
+	} while (0);
+	sd_bus_error_free(&error);
+	sd_bus_unref(bus);
 
-	exit(EXIT_SUCCESS);
+	exit(ret < 0 ? ret : EXIT_SUCCESS);
 }
