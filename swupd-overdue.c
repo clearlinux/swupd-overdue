@@ -31,6 +31,7 @@
 #include <time.h>
 #include <string.h>
 #include <errno.h>
+#include <netdb.h>
 #include <systemd/sd-bus.h>
 
 /* What file do we check against? */
@@ -48,6 +49,7 @@ int main(int argc, char *argv[])
 	sd_bus_error error = SD_BUS_ERROR_NULL;
 	sd_bus *bus = NULL;
 	int ret = 0;
+	int i;
 
 	if (argc == 2) {
 		exp = strtol(argv[1], NULL, 10);
@@ -79,6 +81,25 @@ int main(int argc, char *argv[])
 		(t - tf) / 86400.0,
 		exp / 86400.0);
 
+	/* Check for the network being online */
+	for (i = 1; i < 128 ; i *= 2) {
+		struct hostent *h = gethostbyname("download.clearlinux.org");
+		if (h)
+			break;
+		sleep(i);
+	};
+
+	/*
+	 * No network was found, exit normally!
+	 *
+	 * We do this because there's no reason to raise an error
+	 * that is likely already known. Exiting with a failure
+	 * wouldn't accomplish anything
+	 */
+	if (i >= 128)
+		exit(EXIT_SUCCESS);
+
+	/* online or not, attempt the update */
 	do {
 		if ((ret = sd_bus_open_system(&bus)) < 0)
 			break;
