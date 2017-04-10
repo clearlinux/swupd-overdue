@@ -13,8 +13,11 @@ AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
-AC_CHECK_HEADERS([stdlib.h string.h unistd.h systemd/sd-bus.h])
+AC_CHECK_HEADERS([netdb.h stdlib.h string.h unistd.h systemd/sd-bus.h time.h errno.h limits.h])
 AC_CHECK_FUNCS([memset])
+AC_CHECK_FUNCS([sleep])
+AC_CHECK_FUNCS([gethostbyname])
+AC_CHECK_FUNCS([strtol])
 
 PKG_CHECK_MODULES([SYSTEMD], [systemd])
 PKG_CHECK_MODULES([LIBSYSTEMD], [libsystemd], [],
