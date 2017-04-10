@@ -4,14 +4,19 @@ AM_CFLAGS = \
 	-Werror-implicit-function-declaration \
 	-Wformat -Wformat-security -Werror=format-security \
 	-Wno-conversion -Wunused-variable -Wunreachable-code \
-	-Wall -W -D_FORTIFY_SOURCE=2 -std=c11 \
-	$(LIBSYSTEMD_LIBS)
+	-Wall -W -D_FORTIFY_SOURCE=2 -std=c11
 
 bin_PROGRAMS = \
 	swupd-overdue
 
 swupd_overdue_SOURCES = \
 	swupd-overdue.c
+
+swupd_overdue_CFLAGS = \
+	$(LIBSYSTEMD_CFLAGS)
+
+swupd_overdue_LDADD = \
+	$(LIBSYSTEMD_LIBS)
 
 EXTRA_DIST = \
 	COPYING \
