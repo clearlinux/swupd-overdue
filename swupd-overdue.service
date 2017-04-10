@@ -2,7 +2,9 @@
 Description=Trigger OS Update if an update is overdue
 
 [Service]
-Type=oneshot
+Type=normal
+Restart=no
+RemainAfterExit=yes
 ExecStart=/usr/bin/swupd-overdue
 
 [Install]
