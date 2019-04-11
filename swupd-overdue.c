@@ -52,6 +52,14 @@ int main(int argc, char *argv[])
 	int i;
 
 	if (argc == 2) {
+		if ((strncmp(argv[1], "-h", strlen("-h")) == 0) ||
+		    (strncmp(argv[1], "--help", strlen("--help")) == 0)) {
+			fprintf(stderr, "Usage: %s [seconds]\n", argv[0]);
+			fprintf(stderr, "    Force an update of the OS if the "
+			                "system hasn't been updated since "
+			                "[seconds] ago.\n");
+			exit(EXIT_SUCCESS);
+		}
 		exp = strtol(argv[1], NULL, 10);
 		if ( (exp == LONG_MAX || exp == LONG_MIN) && errno != 0 )
 			exit(errno);
